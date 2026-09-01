@@ -1,5 +1,7 @@
 package com.spv.spv_backend.infra.GestionInventario.Producto.Entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,4 +25,7 @@ public class ProductoEntity {
 
     @Column(name = "estado", nullable = false)
     private Boolean estado;
+
+    @Column(name = "fecha_creacion", insertable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
 }

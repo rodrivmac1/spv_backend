@@ -1,5 +1,7 @@
 package com.spv.spv_backend.web.GestionInventario.Producto.DTO;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +16,5 @@ public class ProductoConDetallesResponseDTO {
     private String nombreMateriaPrima;
     private Long totalInsumos;
     private Long totalPresentaciones;
+    private LocalDateTime fechaCreacion;
 }

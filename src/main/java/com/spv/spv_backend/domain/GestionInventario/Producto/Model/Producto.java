@@ -1,10 +1,13 @@
 package com.spv.spv_backend.domain.GestionInventario.Producto.Model;
 
+import java.time.LocalDateTime;
+
 public class Producto {
 
     private Long idProducto;
     private String nombre;
     private Boolean estado;
+    private LocalDateTime fechaCreacion; // Nuevo campo
 
     public Producto() {
     }
@@ -17,4 +20,7 @@ public class Producto {
 
     public Boolean getEstado() { return estado; }
     public void setEstado(Boolean estado) { this.estado = estado; }
+
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 }

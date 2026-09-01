@@ -15,6 +15,7 @@ public class ProductoMapper {
         domain.setIdProducto(entity.getIdProducto());
         domain.setNombre(entity.getNombre());
         domain.setEstado(entity.getEstado());
+        domain.setFechaCreacion(entity.getFechaCreacion());
 
         return domain;
     }

@@ -105,6 +105,7 @@ public class ProductoService {
         res.setIdProducto(dom.getIdProducto());
         res.setNombre(dom.getNombre());
         res.setEstado(dom.getEstado());
+        res.setFechaCreacion(dom.getFechaCreacion());
         return res;
     }
 }

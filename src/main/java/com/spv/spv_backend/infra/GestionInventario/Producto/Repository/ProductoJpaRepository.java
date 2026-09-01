@@ -17,12 +17,13 @@ public interface ProductoJpaRepository extends JpaRepository<ProductoEntity, Lon
            "p.idProducto, p.nombre, p.estado, " +
            "COALESCE(mp.nombre, 'Sin Materia Prima'), " +
            "COUNT(DISTINCT i.idProductoInsumo), " +
-           "COUNT(DISTINCT pr.idProductoPresentacion)) " +
+           "COUNT(DISTINCT pr.idProductoPresentacion), " +
+           "p.fechaCreacion) " + // <-- Añadido aquí
            "FROM ProductoEntity p " +
            "LEFT JOIN MateriasPrimasEntity mp ON mp.idProducto = p.idProducto " +
            "LEFT JOIN ProductoInsumoEntity i ON i.idProducto = p.idProducto " +
            "LEFT JOIN ProductoPresentacionEntity pr ON pr.idProducto = p.idProducto " +
            "WHERE p.estado = true " +
-           "GROUP BY p.idProducto, p.nombre, p.estado, mp.nombre")
+           "GROUP BY p.idProducto, p.nombre, p.estado, p.fechaCreacion, mp.nombre")
     List<ProductoConDetallesResponseDTO> listarProductosConDetallesActivos();
 }
