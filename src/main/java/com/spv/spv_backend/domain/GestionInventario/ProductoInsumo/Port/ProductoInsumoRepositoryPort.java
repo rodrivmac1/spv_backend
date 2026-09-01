@@ -7,6 +7,8 @@ import com.spv.spv_backend.domain.GestionInventario.ProductoInsumo.Model.Product
 public interface ProductoInsumoRepositoryPort {
     List<ProductoInsumo> findByIdProducto(Long idProducto);
     Optional<ProductoInsumo> findById(Long id);
+    Optional<ProductoInsumo> findByIdAndIdProducto(Long idInsumo, Long idProducto);
+
     ProductoInsumo save(ProductoInsumo productoInsumo);
     void deleteById(Long id);
 }

@@ -35,10 +35,10 @@ public class ProductoInsumoService {
     }
 
     public ProductoInsumoResponseDTO editarInsumo(Long idProducto, Long idInsumo, ProductoInsumoRequestDTO request) {
-        ProductoInsumo existente = repositoryPort.findById(idInsumo)
-                .orElseThrow(() -> new RuntimeException("Insumo de producto no encontrado con ID: " + idInsumo));
+        // Validación estricta: Busca el insumo validando que coincidan ambos IDs
+        ProductoInsumo existente = repositoryPort.findByIdAndIdProducto(idInsumo, idProducto)
+                .orElseThrow(() -> new RuntimeException("El insumo con ID " + idInsumo + " no pertenece al producto con ID " + idProducto));
 
-        // Validar opcionalmente que pertenezca al producto si se desea mayor seguridad
         existente.setNombre(request.getNombre());
         existente.setCosto(request.getCosto());
 
@@ -47,8 +47,9 @@ public class ProductoInsumoService {
     }
 
     public void eliminarInsumo(Long idProducto, Long idInsumo) {
-        ProductoInsumo existente = repositoryPort.findById(idInsumo)
-                .orElseThrow(() -> new RuntimeException("Insumo de producto no encontrado con ID: " + idInsumo));
+        // Validación estricta para eliminación
+        ProductoInsumo existente = repositoryPort.findByIdAndIdProducto(idInsumo, idProducto)
+                .orElseThrow(() -> new RuntimeException("El insumo con ID " + idInsumo + " no pertenece al producto con ID " + idProducto));
         
         repositoryPort.deleteById(existente.getIdProductoInsumo());
     }

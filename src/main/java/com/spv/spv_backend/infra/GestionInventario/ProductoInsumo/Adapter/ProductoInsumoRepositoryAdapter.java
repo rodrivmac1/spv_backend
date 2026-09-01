@@ -34,6 +34,13 @@ public class ProductoInsumoRepositoryAdapter implements ProductoInsumoRepository
         return jpaRepository.findById(id).map(mapper::toDomain);
     }
 
+    // Nueva implementación
+    @Override
+    public Optional<ProductoInsumo> findByIdAndIdProducto(Long idInsumo, Long idProducto) {
+        return jpaRepository.findByIdProductoInsumoAndIdProducto(idInsumo, idProducto)
+                .map(mapper::toDomain);
+    }
+
     @Override
     public ProductoInsumo save(ProductoInsumo productoInsumo) {
         var entity = mapper.toEntity(productoInsumo);
