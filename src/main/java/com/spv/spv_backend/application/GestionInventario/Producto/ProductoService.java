@@ -15,6 +15,7 @@ import com.spv.spv_backend.domain.GestionInventario.ProductoInsumo.Port.Producto
 import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Model.ProductoPresentacion;
 import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Port.ProductoPresentacionRepositoryPort;
 import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoCompletoRequestDTO;
+import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoConDetallesResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoResponseDTO;
 
@@ -29,10 +30,9 @@ public class ProductoService {
     private final MateriasPrimasRepositoryPort materiaPrimaRepositoryPort;
     private final ProductoPresentacionRepositoryPort presentacionRepositoryPort;
 
-    public List<ProductoResponseDTO> obtenerProductosActivos() {
-        return productoRepositoryPort.listActive().stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    // Método modificado para devolver la lista con los nuevos campos agregados
+    public List<ProductoConDetallesResponseDTO> obtenerProductosActivos() {
+        return productoRepositoryPort.listActiveWithDetails();
     }
 
     public ProductoResponseDTO obtenerProductoPorId(Long id) {
@@ -41,17 +41,14 @@ public class ProductoService {
         return mapToResponse(producto);
     }
 
-    // ⭐ SERVICIO TRANSACCIONAL MAESTRO: Guarda el producto y todas sus tablas hijas en una sola operación
     @Transactional
     public ProductoResponseDTO crearProductoCompleto(ProductoCompletoRequestDTO request) {
-        // 1. Guardar Producto Padre
         Producto producto = new Producto();
         producto.setNombre(request.getNombre());
-        producto.setEstado(true); // Nace activo
+        producto.setEstado(true);
         Producto productoGuardado = productoRepositoryPort.save(producto);
         Long idProducto = productoGuardado.getIdProducto();
 
-        // 2. Guardar Insumos Específicos (si vienen en el request)
         if (request.getInsumos() != null && !request.getInsumos().isEmpty()) {
             for (var insumoDto : request.getInsumos()) {
                 ProductoInsumo insumo = new ProductoInsumo();
@@ -62,7 +59,6 @@ public class ProductoService {
             }
         }
 
-        // 3. Guardar Materia Prima Base (si viene en el request)
         if (request.getMateriaPrima() != null) {
             var mpDto = request.getMateriaPrima();
             MateriasPrimas mp = new MateriasPrimas();
@@ -73,7 +69,6 @@ public class ProductoService {
             materiaPrimaRepositoryPort.save(mp);
         }
 
-        // 4. Guardar Presentaciones (si vienen en el request)
         if (request.getPresentaciones() != null && !request.getPresentaciones().isEmpty()) {
             for (var presDto : request.getPresentaciones()) {
                 ProductoPresentacion pres = new ProductoPresentacion();
@@ -88,7 +83,6 @@ public class ProductoService {
         return mapToResponse(productoGuardado);
     }
 
-    // Editar solo el nombre del producto
     public ProductoResponseDTO editarProducto(Long id, ProductoRequestDTO request) {
         Producto existente = productoRepositoryPort.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
@@ -98,7 +92,6 @@ public class ProductoService {
         return mapToResponse(actualizado);
     }
 
-    // Eliminación lógica del producto
     public void eliminacionLogica(Long id) {
         Producto existente = productoRepositoryPort.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spv.spv_backend.application.GestionInventario.Producto.ProductoService;
 import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoCompletoRequestDTO;
+import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoConDetallesResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoResponseDTO;
 
@@ -30,8 +31,9 @@ public class ProductoController {
 
     private final ProductoService productoService;
 
+    // GET general actualizado que retorna la lista con los conteos y la materia prima
     @GetMapping
-    public ResponseEntity<List<ProductoResponseDTO>> listarProductosActivos() {
+    public ResponseEntity<List<ProductoConDetallesResponseDTO>> listarProductosActivos() {
         return ResponseEntity.ok(productoService.obtenerProductosActivos());
     }
 
@@ -40,7 +42,6 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.obtenerProductoPorId(id));
     }
 
-    // ⭐ ENDPOINT PRINCIPAL: Recibe todo el JSON compuesto del wizard y lo guarda de golpe de forma atómica
     @PostMapping
     public ResponseEntity<ProductoResponseDTO> crearProductoCompleto(@Valid @RequestBody ProductoCompletoRequestDTO request) {
         ProductoResponseDTO nuevoProducto = productoService.crearProductoCompleto(request);

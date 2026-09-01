@@ -10,6 +10,7 @@ import com.spv.spv_backend.domain.GestionInventario.Producto.Model.Producto;
 import com.spv.spv_backend.domain.GestionInventario.Producto.Port.ProductoRepositoryPort;
 import com.spv.spv_backend.infra.GestionInventario.Producto.Mapper.ProductoMapper;
 import com.spv.spv_backend.infra.GestionInventario.Producto.Repository.ProductoJpaRepository;
+import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoConDetallesResponseDTO;
 
 @Component
 public class ProductoRepositoryAdapter implements ProductoRepositoryPort {
@@ -27,6 +28,11 @@ public class ProductoRepositoryAdapter implements ProductoRepositoryPort {
         return jpaRepository.findByEstadoTrue().stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductoConDetallesResponseDTO> listActiveWithDetails() {
+        return jpaRepository.listarProductosConDetallesActivos();
     }
 
     @Override
