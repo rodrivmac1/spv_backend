@@ -28,10 +28,16 @@ public class ProductoPresentacionRepositoryAdapter implements ProductoPresentaci
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
-
     @Override
     public Optional<ProductoPresentacion> findById(Long id) {
         return jpaRepository.findById(id).map(mapper::toDomain);
+    }
+
+    // Nueva implementación
+    @Override
+    public Optional<ProductoPresentacion> findByIdAndIdProducto(Long idPresentacion, Long idProducto) {
+        return jpaRepository.findByIdProductoPresentacionAndIdProducto(idPresentacion, idProducto)
+                .map(mapper::toDomain);
     }
 
     @Override

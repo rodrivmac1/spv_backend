@@ -36,8 +36,9 @@ public class ProductoPresentacionService {
     }
 
     public ProductoPresentacionResponseDTO editarPresentacion(Long idProducto, Long idPresentacion, ProductoPresentacionRequestDTO request) {
-        ProductoPresentacion existente = repositoryPort.findById(idPresentacion)
-                .orElseThrow(() -> new RuntimeException("Presentación de producto no encontrada con ID: " + idPresentacion));
+        // Validación estricta con ambos IDs
+        ProductoPresentacion existente = repositoryPort.findByIdAndIdProducto(idPresentacion, idProducto)
+                .orElseThrow(() -> new RuntimeException("La presentación con ID " + idPresentacion + " no pertenece al producto con ID " + idProducto));
 
         existente.setNombre(request.getNombre());
         existente.setGramos(request.getGramos());
@@ -48,12 +49,13 @@ public class ProductoPresentacionService {
     }
 
     public void eliminarPresentacion(Long idProducto, Long idPresentacion) {
-        ProductoPresentacion existente = repositoryPort.findById(idPresentacion)
-                .orElseThrow(() -> new RuntimeException("Presentación de producto no encontrada con ID: " + idPresentacion));
+        // Validación estricta para eliminación
+        ProductoPresentacion existente = repositoryPort.findByIdAndIdProducto(idPresentacion, idProducto)
+                .orElseThrow(() -> new RuntimeException("La presentación con ID " + idPresentacion + " no pertenece al producto con ID " + idProducto));
         
         repositoryPort.deleteById(existente.getIdProductoPresentacion());
     }
-
+    
     private ProductoPresentacionResponseDTO mapToResponse(ProductoPresentacion dom) {
         ProductoPresentacionResponseDTO res = new ProductoPresentacionResponseDTO();
         res.setIdProductoPresentacion(dom.getIdProductoPresentacion());
