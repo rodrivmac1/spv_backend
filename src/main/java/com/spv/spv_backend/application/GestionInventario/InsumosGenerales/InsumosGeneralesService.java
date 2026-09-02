@@ -37,7 +37,7 @@ public class InsumosGeneralesService {
         InsumosGenerales insumo = new InsumosGenerales();
         insumo.setNombre(request.getNombre());
         insumo.setCosto(request.getCosto());
-        insumo.setFechaaAgregado(LocalDateTime.now()); // Automática al crear
+        insumo.setFechaAgregado(LocalDateTime.now()); // Automática al crear
         insumo.setEstado(true); // Siempre nace activo
 
         InsumosGenerales saved = repositoryPort.save(insumo);
@@ -71,7 +71,7 @@ public class InsumosGeneralesService {
         res.setIdInsumoGeneral(dom.getIdInsumoGeneral());
         res.setNombre(dom.getNombre());
         res.setCosto(dom.getCosto());
-        res.setFechaaAgregado(dom.getFechaaAgregado());
+        res.setFechaAgregado(dom.getFechaAgregado());
         res.setEstado(dom.getEstado());
         return res;
     }

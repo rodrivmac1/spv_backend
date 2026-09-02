@@ -9,6 +9,6 @@ public class InsumosGeneralesResponseDTO {
     private Long idInsumoGeneral;
     private String nombre;
     private Double costo;
-    private LocalDateTime fechaaAgregado;
+    private LocalDateTime fechaAgregado;
     private Boolean estado;
 }

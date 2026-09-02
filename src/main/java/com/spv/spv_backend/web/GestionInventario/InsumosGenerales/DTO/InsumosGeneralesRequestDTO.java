@@ -19,7 +19,7 @@ public class InsumosGeneralesRequestDTO {
     @NotNull(message = "El costo es requerido")
     private Double costo;
 
-    private LocalDateTime fechaaAgregado;
+    private LocalDateTime fechaAgregado;
     
     private Boolean estado;
 }

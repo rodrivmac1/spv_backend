@@ -15,7 +15,7 @@ public class InsumosGeneralesMapper {
         domain.setIdInsumoGeneral(entity.getIdInsumoGeneral());
         domain.setNombre(entity.getNombre());
         domain.setCosto(entity.getCosto());
-        domain.setFechaaAgregado(entity.getFechaaAgregado());
+        domain.setFechaAgregado(entity.getFechaAgregado());
         domain.setEstado(entity.getEstado());
 
         return domain;
@@ -28,7 +28,7 @@ public class InsumosGeneralesMapper {
         entity.setIdInsumoGeneral(domain.getIdInsumoGeneral());
         entity.setNombre(domain.getNombre());
         entity.setCosto(domain.getCosto());
-        entity.setFechaaAgregado(domain.getFechaaAgregado());
+        entity.setFechaAgregado(domain.getFechaAgregado());
         entity.setEstado(domain.getEstado());
 
         return entity;

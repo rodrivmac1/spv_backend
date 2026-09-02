@@ -26,8 +26,8 @@ public class InsumosGeneralesEntity {
     @Column(name = "costo", nullable = false)
     private Double costo;
 
-    @Column(name = "fechaa_agregado")
-    private LocalDateTime fechaaAgregado;
+    @Column(name = "fecha_agregado")
+    private LocalDateTime fechaAgregado;
 
     @Column(name = "estado", nullable = false)
     private Boolean estado;

@@ -7,7 +7,7 @@ public class InsumosGenerales {
     private Long idInsumoGeneral;
     private String nombre;
     private Double costo;
-    private LocalDateTime fechaaAgregado;
+    private LocalDateTime fechaAgregado;
     private Boolean estado;
 
     public InsumosGenerales() {
@@ -22,8 +22,8 @@ public class InsumosGenerales {
     public Double getCosto() { return costo; }
     public void setCosto(Double costo) { this.costo = costo; }
 
-    public LocalDateTime getFechaaAgregado() { return fechaaAgregado; }
-    public void setFechaaAgregado(LocalDateTime fechaaAgregado) { this.fechaaAgregado = fechaaAgregado; }
+    public LocalDateTime getFechaAgregado() { return fechaAgregado; }
+    public void setFechaAgregado(LocalDateTime fechaAgregado) { this.fechaAgregado = fechaAgregado; }
 
     public Boolean getEstado() { return estado; }
     public void setEstado(Boolean estado) { this.estado = estado; }
