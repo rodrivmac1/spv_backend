@@ -1,5 +1,6 @@
 package com.spv.spv_backend.infra.GestionInventario.ProduccionSemanalProducto.Entity;
 
+import com.spv.spv_backend.infra.GestionInventario.NumeroSemana.Entity.NumeroSemanaEntity;
 import com.spv.spv_backend.infra.GestionInventario.Producto.Entity.ProductoEntity;
 
 import jakarta.persistence.Column;
@@ -50,5 +51,8 @@ public class ProduccionSemanalProductoEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto", referencedColumnName = "id_producto", insertable = false, updatable = false)
     private ProductoEntity producto;
-    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_produccion_semanal", referencedColumnName = "id_produccion_semanal", insertable = false, updatable = false)
+    private NumeroSemanaEntity produccionSemanal;
 }
