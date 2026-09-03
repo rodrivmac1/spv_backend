@@ -28,4 +28,6 @@ public class NumeroSemanaEntity {
 
     @Column(name = "numero_semana", nullable = false)
     private Integer numeroSemana;
+
+    
 }

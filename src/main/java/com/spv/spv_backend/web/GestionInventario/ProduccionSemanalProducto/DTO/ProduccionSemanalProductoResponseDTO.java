@@ -8,6 +8,7 @@ public class ProduccionSemanalProductoResponseDTO {
     private Long idProduccionSemanal;
     private Long idProducto;
     private Double kgComprados;
+    private String nombre;
     private Double costoInsumos;
     private Double costoGeneralAsignado;
     private Double costoTotalLote;

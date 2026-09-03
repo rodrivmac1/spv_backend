@@ -15,6 +15,9 @@ public class ProduccionSemanalProductoMapper {
         domain.setIdProduccionProducto(entity.getIdProduccionProducto());
         domain.setIdProduccionSemanal(entity.getIdProduccionSemanal());
         domain.setIdProducto(entity.getIdProducto());
+        if (entity.getProducto() != null) {
+            domain.setNombre(entity.getProducto().getNombre());
+        }
         domain.setKgComprados(entity.getKgComprados());
         domain.setCostoInsumos(entity.getCostoInsumos());
         domain.setCostoGeneralAsignado(entity.getCostoGeneralAsignado());

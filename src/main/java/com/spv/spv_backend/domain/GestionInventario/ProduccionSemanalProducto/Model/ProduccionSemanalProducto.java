@@ -6,6 +6,7 @@ public class ProduccionSemanalProducto {
     private Long idProduccionSemanal;
     private Long idProducto;
     private Double kgComprados;
+    private String nombre;
     private Double costoInsumos;
     private Double costoGeneralAsignado;
     private Double costoTotalLote;
@@ -26,6 +27,9 @@ public class ProduccionSemanalProducto {
 
     public Double getKgComprados() { return kgComprados; }
     public void setKgComprados(Double kgComprados) { this.kgComprados = kgComprados; }
+
+    public String getNombre() { return nombre; } // <-- Get y Set
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
     public Double getCostoInsumos() { return costoInsumos; }
     public void setCostoInsumos(Double costoInsumos) { this.costoInsumos = costoInsumos; }
