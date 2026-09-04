@@ -16,10 +16,13 @@ import com.spv.spv_backend.domain.GestionInventario.Producto.Model.Producto;
 import com.spv.spv_backend.domain.GestionInventario.Producto.Port.ProductoRepositoryPort;
 import com.spv.spv_backend.domain.GestionInventario.ProductoInsumo.Model.ProductoInsumo;
 import com.spv.spv_backend.domain.GestionInventario.ProductoInsumo.Port.ProductoInsumoRepositoryPort;
+import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalInsumosGenerales.Model.ProduccionSemanalInsumosGenerales;
+import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalInsumosGenerales.Port.ProduccionSemanalInsumosGeneralesRepositoryPort;
 import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalProducto.Model.ProduccionSemanalProducto;
 import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalProducto.Port.ProduccionSemanalProductoRepositoryPort;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaResponseDTO;
+import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.ProduccionSemanalInsumosGeneralesResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +36,7 @@ public class NumeroSemanaService {
     private final ProductoInsumoRepositoryPort productoInsumoRepositoryPort;
     private final InsumosGeneralesRepositoryPort insumosGeneralesRepositoryPort;
     private final ProduccionSemanalProductoRepositoryPort produccionSemanalProductoRepositoryPort;
+    private final ProduccionSemanalInsumosGeneralesRepositoryPort produccionSemanalInsumosGeneralesRepositoryPort; // <-- Nuevo puerto inyectado
 
     public List<NumeroSemanaResponseDTO> listarSemanas() {
         return repositoryPort.findAll().stream()
@@ -57,21 +61,43 @@ public class NumeroSemanaService {
 
         int year = request.getFechaInicio().getYear();
 
-        // Obtiene el número de semana más alto del año correspondiente y le suma 1 (si no hay registros, empieza en 1)
         Integer maxSemana = repositoryPort.findMaxNumeroSemanaByYear(year);
         int siguienteNumeroSemana = (maxSemana == null ? 0 : maxSemana) + 1;
 
         NumeroSemana semana = new NumeroSemana();
         semana.setFechaInicio(request.getFechaInicio());
         semana.setFechaFin(request.getFechaFin());
-        semana.setNumeroSemana(siguienteNumeroSemana); // Folio automático que se reinicia por año
+        semana.setNumeroSemana(siguienteNumeroSemana);
 
         NumeroSemana saved = repositoryPort.save(semana);
         if (saved == null || saved.getIdProduccionSemanal() == null) {
             throw new IllegalStateException("No fue posible obtener el ID de la semana creada");
         }
+
+        // 1. Guardar automáticamente los insumos generales activos de la semana
+        guardarInsumosGeneralesSemana(saved.getIdProduccionSemanal());
+
+        // 2. Crear cálculos por producto
         crearCalculosPorProducto(saved.getIdProduccionSemanal());
+
         return mapToResponse(saved);
+    }
+
+    private void guardarInsumosGeneralesSemana(Long idProduccionSemanal) {
+        List<InsumosGenerales> insumosActivos = insumosGeneralesRepositoryPort.listActive();
+        if (insumosActivos.isEmpty()) {
+            return;
+        }
+
+        List<ProduccionSemanalInsumosGenerales> insumosSemanal = insumosActivos.stream().map(insumo -> {
+            ProduccionSemanalInsumosGenerales prodInsumo = new ProduccionSemanalInsumosGenerales();
+            prodInsumo.setIdProduccionSemanal(idProduccionSemanal);
+            prodInsumo.setIdInsumoGeneral(insumo.getIdInsumoGeneral());
+            prodInsumo.setCosto(insumo.getCosto());
+            return prodInsumo;
+        }).collect(Collectors.toList());
+
+        produccionSemanalInsumosGeneralesRepositoryPort.saveAll(insumosSemanal);
     }
 
     private void crearCalculosPorProducto(Long idProduccionSemanal) {
@@ -96,8 +122,10 @@ public class NumeroSemanaService {
             throw new IllegalStateException("El total de kilos comprados debe ser mayor que cero");
         }
 
-        double costosGeneralesSemanales = insumosGeneralesRepositoryPort.listActive().stream()
-                .mapToDouble(this::obtenerCosto)
+        // Se obtienen los costos generales recién guardados para esta semana
+        double costosGeneralesSemanales = produccionSemanalInsumosGeneralesRepositoryPort
+                .findByIdProduccionSemanal(idProduccionSemanal).stream()
+                .mapToDouble(ProduccionSemanalInsumosGenerales::getCosto)
                 .sum();
 
         List<ProduccionSemanalProducto> calculos = new java.util.ArrayList<>(productos.size());
@@ -112,7 +140,6 @@ public class NumeroSemanaService {
                     * (materiaPrima.getKgComprados() / totalKilos);
             double costoTotalLote = costoInsumos + costoGeneralAsignado;
 
-            // El factor se expresa como porcentaje, pero se aplica como proporción al calcular gramos.
             double factorRendimiento = materiaPrima.getKgRendimiento() * 100;
             double gramosNetosFinales = materiaPrima.getKgComprados() * 1000
                     * (factorRendimiento / 100);
@@ -144,13 +171,6 @@ public class NumeroSemanaService {
         }
     }
 
-    private double obtenerCosto(InsumosGenerales insumo) {
-        if (insumo.getCosto() == null || insumo.getCosto() < 0) {
-            throw new IllegalStateException("El costo del insumo general no puede ser nulo ni negativo");
-        }
-        return insumo.getCosto();
-    }
-
     private double obtenerCosto(ProductoInsumo insumo) {
         if (insumo.getCosto() == null || insumo.getCosto() < 0) {
             throw new IllegalStateException("El costo del insumo del producto no puede ser nulo ni negativo");
@@ -171,7 +191,6 @@ public class NumeroSemanaService {
 
         existente.setFechaInicio(request.getFechaInicio());
         existente.setFechaFin(request.getFechaFin());
-        // El número de semana no suele modificarse al editar fechas, pero se conservan las fechas nuevas.
 
         NumeroSemana updated = repositoryPort.save(existente);
         return mapToResponse(updated);
@@ -190,6 +209,28 @@ public class NumeroSemanaService {
         res.setFechaInicio(dom.getFechaInicio());
         res.setFechaFin(dom.getFechaFin());
         res.setNumeroSemana(dom.getNumeroSemana());
+
+        // Obtener insumos generales de esta semana
+        List<ProduccionSemanalInsumosGenerales> insumosGenerales = produccionSemanalInsumosGeneralesRepositoryPort
+                .findByIdProduccionSemanal(dom.getIdProduccionSemanal());
+
+        List<ProduccionSemanalInsumosGeneralesResponseDTO> insumosDTOs = insumosGenerales.stream().map(i -> {
+            ProduccionSemanalInsumosGeneralesResponseDTO dto = new ProduccionSemanalInsumosGeneralesResponseDTO();
+            dto.setIdProduccionSemanalInsumoGeneral(i.getIdProduccionSemanalInsumoGeneral());
+            dto.setIdInsumoGeneral(i.getIdInsumoGeneral());
+            dto.setNombreInsumo(i.getNombreInsumo());
+            dto.setCosto(i.getCosto());
+            return dto;
+        }).collect(Collectors.toList());
+
+        // Calcular la suma total de los insumos generales de la semana
+        double sumaTotal = insumosGenerales.stream()
+                .mapToDouble(i -> i.getCosto() != null ? i.getCosto() : 0.0)
+                .sum();
+
+        res.setInsumosGenerales(insumosDTOs);
+        res.setTotalInsumosGenerales(sumaTotal);
+
         return res;
     }
 }

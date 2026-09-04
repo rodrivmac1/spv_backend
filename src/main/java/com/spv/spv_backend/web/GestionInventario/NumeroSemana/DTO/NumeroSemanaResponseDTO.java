@@ -1,6 +1,7 @@
 package com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.Data;
 
@@ -10,4 +11,6 @@ public class NumeroSemanaResponseDTO {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Integer numeroSemana;
+    private Double totalInsumosGenerales;
+    private List<ProduccionSemanalInsumosGeneralesResponseDTO> insumosGenerales;
 }

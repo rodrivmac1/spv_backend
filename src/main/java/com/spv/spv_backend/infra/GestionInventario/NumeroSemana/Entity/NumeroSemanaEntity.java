@@ -3,6 +3,7 @@ package com.spv.spv_backend.infra.GestionInventario.NumeroSemana.Entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.spv.spv_backend.infra.GestionInventario.ProduccionSemanalInsumosGenerales.Entity.ProduccionSemanalInsumosGeneralesEntity;
 import com.spv.spv_backend.infra.GestionInventario.ProduccionSemanalProducto.Entity.ProduccionSemanalProductoEntity;
 
 import jakarta.persistence.CascadeType;
@@ -36,4 +37,7 @@ public class NumeroSemanaEntity {
 
     @OneToMany(mappedBy = "produccionSemanal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProduccionSemanalProductoEntity> productosSemanal;
+
+    @OneToMany(mappedBy = "produccionSemanal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProduccionSemanalInsumosGeneralesEntity> insumosGeneralesSemanal;
 }
