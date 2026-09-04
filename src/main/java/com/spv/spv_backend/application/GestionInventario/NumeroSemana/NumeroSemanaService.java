@@ -20,6 +20,12 @@ import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalInsumosGene
 import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalInsumosGenerales.Port.ProduccionSemanalInsumosGeneralesRepositoryPort;
 import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalProducto.Model.ProduccionSemanalProducto;
 import com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalProducto.Port.ProduccionSemanalProductoRepositoryPort;
+// Nuevos imports agregados
+import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Model.ProductoPresentacion;
+import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Port.ProductoPresentacionRepositoryPort;
+import com.spv.spv_backend.domain.GestionInventario.ProduccionProductoPresentacion.Model.ProduccionProductoPresentacion;
+import com.spv.spv_backend.domain.GestionInventario.ProduccionProductoPresentacion.Port.ProduccionProductoPresentacionRepositoryPort;
+
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.ProduccionSemanalInsumosGeneralesResponseDTO;
@@ -36,7 +42,11 @@ public class NumeroSemanaService {
     private final ProductoInsumoRepositoryPort productoInsumoRepositoryPort;
     private final InsumosGeneralesRepositoryPort insumosGeneralesRepositoryPort;
     private final ProduccionSemanalProductoRepositoryPort produccionSemanalProductoRepositoryPort;
-    private final ProduccionSemanalInsumosGeneralesRepositoryPort produccionSemanalInsumosGeneralesRepositoryPort; // <-- Nuevo puerto inyectado
+    private final ProduccionSemanalInsumosGeneralesRepositoryPort produccionSemanalInsumosGeneralesRepositoryPort; 
+    
+    // Nuevos puertos inyectados para presentaciones
+    private final ProductoPresentacionRepositoryPort productoPresentacionRepositoryPort;
+    private final ProduccionProductoPresentacionRepositoryPort produccionProductoPresentacionRepositoryPort;
 
     public List<NumeroSemanaResponseDTO> listarSemanas() {
         return repositoryPort.findAll().stream()
@@ -77,7 +87,7 @@ public class NumeroSemanaService {
         // 1. Guardar automáticamente los insumos generales activos de la semana
         guardarInsumosGeneralesSemana(saved.getIdProduccionSemanal());
 
-        // 2. Crear cálculos por producto
+        // 2. Crear cálculos por producto y sus presentaciones
         crearCalculosPorProducto(saved.getIdProduccionSemanal());
 
         return mapToResponse(saved);
@@ -129,6 +139,8 @@ public class NumeroSemanaService {
                 .sum();
 
         List<ProduccionSemanalProducto> calculos = new java.util.ArrayList<>(productos.size());
+        List<ProduccionProductoPresentacion> presentacionesCalculadasTotales = new java.util.ArrayList<>();
+
         for (int i = 0; i < productos.size(); i++) {
             Producto producto = productos.get(i);
             MateriasPrimas materiaPrima = materiasPrimas.get(i);
@@ -157,7 +169,36 @@ public class NumeroSemanaService {
             calculos.add(calculo);
         }
 
-        produccionSemanalProductoRepositoryPort.saveAll(calculos);
+        // Guardamos primero los productos semanales para obtener sus IDs generados (id_produccion_producto)
+        List<ProduccionSemanalProducto> calculosGuardados = produccionSemanalProductoRepositoryPort.saveAll(calculos);
+
+        // Recorremos los registros guardados para calcular y asociar las presentaciones
+        for (ProduccionSemanalProducto prodSemanal : calculosGuardados) {
+            List<ProductoPresentacion> presentaciones = productoPresentacionRepositoryPort.findByIdProducto(prodSemanal.getIdProducto());
+            
+            for (ProductoPresentacion presentacion : presentaciones) {
+                // Fórmulas requeridas:
+                // Costo de producción por bolsa = Costo por cada 100 gramos * (Gramos de la presentación / 100)
+                double costoProduccionBolsa = prodSemanal.getCosto100g() * (presentacion.getGramos() / 100.0);
+                
+                // Precio de venta sugerido = Costo de producción por bolsa * (1 + Margen de ganancia % / 100)
+                double margen = presentacion.getMargenGanancia() != null ? presentacion.getMargenGanancia() : 0.0;
+                double precioVentaSugerido = costoProduccionBolsa * (1.0 + (margen / 100.0));
+
+                ProduccionProductoPresentacion ppp = new ProduccionProductoPresentacion();
+                ppp.setIdProduccionProducto(prodSemanal.getIdProduccionProducto());
+                ppp.setIdProductoPresentacion(presentacion.getIdProductoPresentacion());
+                ppp.setCostoProduccion(costoProduccionBolsa);
+                ppp.setPrecioVentaSugerido(precioVentaSugerido);
+
+                presentacionesCalculadasTotales.add(ppp);
+            }
+        }
+
+        // Guardar todos los cálculos de presentación
+        if (!presentacionesCalculadasTotales.isEmpty()) {
+            produccionProductoPresentacionRepositoryPort.saveAll(presentacionesCalculadasTotales);
+        }
     }
 
     private void validarMateriaPrima(MateriasPrimas materiaPrima) {
@@ -210,7 +251,6 @@ public class NumeroSemanaService {
         res.setFechaFin(dom.getFechaFin());
         res.setNumeroSemana(dom.getNumeroSemana());
 
-        // Obtener insumos generales de esta semana
         List<ProduccionSemanalInsumosGenerales> insumosGenerales = produccionSemanalInsumosGeneralesRepositoryPort
                 .findByIdProduccionSemanal(dom.getIdProduccionSemanal());
 
@@ -223,7 +263,6 @@ public class NumeroSemanaService {
             return dto;
         }).collect(Collectors.toList());
 
-        // Calcular la suma total de los insumos generales de la semana
         double sumaTotal = insumosGenerales.stream()
                 .mapToDouble(i -> i.getCosto() != null ? i.getCosto() : 0.0)
                 .sum();

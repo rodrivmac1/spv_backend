@@ -8,5 +8,5 @@ public interface ProduccionSemanalProductoRepositoryPort {
     List<ProduccionSemanalProducto> findByIdProduccionSemanal(Long idProduccionSemanal);
     Optional<ProduccionSemanalProducto> findById(Long id);
     ProduccionSemanalProducto save(ProduccionSemanalProducto producto);
-    void saveAll(List<ProduccionSemanalProducto> productos);
+    List<ProduccionSemanalProducto> saveAll(List<ProduccionSemanalProducto> productos);
 }

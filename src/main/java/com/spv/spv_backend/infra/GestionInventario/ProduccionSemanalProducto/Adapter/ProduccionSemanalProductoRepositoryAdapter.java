@@ -42,10 +42,9 @@ public class ProduccionSemanalProductoRepositoryAdapter implements ProduccionSem
     }
 
     @Override
-    public void saveAll(List<ProduccionSemanalProducto> productos) {
-        List<ProduccionSemanalProductoEntity> entities = productos.stream()
-                .map(mapper::toEntity)
-                .collect(Collectors.toList());
-        jpaRepository.saveAll(entities);
-    }
+public List<ProduccionSemanalProducto> saveAll(List<ProduccionSemanalProducto> productos) {
+    var entities = productos.stream().map(mapper::toEntity).collect(Collectors.toList());
+    var savedEntities = jpaRepository.saveAll(entities); // JPA ya te devuelve esto
+    return savedEntities.stream().map(mapper::toDomain).collect(Collectors.toList());
+}
 }
