@@ -1,10 +1,15 @@
 package com.spv.spv_backend.infra.GestionInventario.ProduccionProductoPresentacion.Entity;
 
+import com.spv.spv_backend.infra.GestionInventario.ProduccionSemanalProducto.Entity.ProduccionSemanalProductoEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -29,4 +34,8 @@ public class ProduccionProductoPresentacionEntity {
 
     @Column(name = "precio_venta_sugerido", nullable = false)
     private Double precioVentaSugerido;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_produccion_producto", referencedColumnName = "id_produccion_producto", insertable = false, updatable = false)
+    private ProduccionSemanalProductoEntity produccionSemanalProducto;
 }

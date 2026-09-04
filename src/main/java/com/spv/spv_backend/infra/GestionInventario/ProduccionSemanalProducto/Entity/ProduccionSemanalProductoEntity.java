@@ -1,8 +1,12 @@
 package com.spv.spv_backend.infra.GestionInventario.ProduccionSemanalProducto.Entity;
 
+import java.util.List;
+
 import com.spv.spv_backend.infra.GestionInventario.NumeroSemana.Entity.NumeroSemanaEntity;
+import com.spv.spv_backend.infra.GestionInventario.ProduccionProductoPresentacion.Entity.ProduccionProductoPresentacionEntity;
 import com.spv.spv_backend.infra.GestionInventario.Producto.Entity.ProductoEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -55,4 +60,7 @@ public class ProduccionSemanalProductoEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_produccion_semanal", referencedColumnName = "id_produccion_semanal", insertable = false, updatable = false)
     private NumeroSemanaEntity produccionSemanal;
+
+    @OneToMany(mappedBy = "produccionSemanalProducto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProduccionProductoPresentacionEntity> presentacionesProducto;
 }
