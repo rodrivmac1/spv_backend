@@ -34,4 +34,14 @@ public class ProduccionProductoPresentacionRepositoryAdapter implements Producci
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProduccionProductoPresentacion> findByIdProduccionProductoAndIdProduccionSemanal(
+            Long idProduccionProducto, Long idProduccionSemanal) {
+        return jpaRepository.findByIdProduccionProductoAndIdProduccionSemanal(
+                        idProduccionProducto, idProduccionSemanal)
+                .stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }

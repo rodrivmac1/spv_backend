@@ -6,6 +6,8 @@ public class ProduccionProductoPresentacion {
     private Long idProductoPresentacion;
     private Double costoProduccion;
     private Double precioVentaSugerido;
+    private String nombre;
+    private Double gramos;
 
     public ProduccionProductoPresentacion() {
     }
@@ -24,4 +26,10 @@ public class ProduccionProductoPresentacion {
 
     public Double getPrecioVentaSugerido() { return precioVentaSugerido; }
     public void setPrecioVentaSugerido(Double precioVentaSugerido) { this.precioVentaSugerido = precioVentaSugerido; }
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public Double getGramos() { return gramos; }
+    public void setGramos(Double gramos) { this.gramos = gramos; }
 }

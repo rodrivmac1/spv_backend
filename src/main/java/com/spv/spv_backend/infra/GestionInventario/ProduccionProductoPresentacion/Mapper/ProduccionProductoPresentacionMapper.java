@@ -15,6 +15,10 @@ public class ProduccionProductoPresentacionMapper {
         domain.setIdProductoPresentacion(entity.getIdProductoPresentacion());
         domain.setCostoProduccion(entity.getCostoProduccion());
         domain.setPrecioVentaSugerido(entity.getPrecioVentaSugerido());
+        if (entity.getProductoPresentacion() != null) {
+            domain.setNombre(entity.getProductoPresentacion().getNombre());
+            domain.setGramos(entity.getProductoPresentacion().getGramos());
+        }
         return domain;
     }
 
