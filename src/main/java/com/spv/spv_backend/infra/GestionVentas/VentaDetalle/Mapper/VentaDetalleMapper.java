@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.spv.spv_backend.domain.GestionVentas.VentaDetalle.Model.VentaDetalle;
 import com.spv.spv_backend.infra.GestionVentas.VentaDetalle.Entity.VentaDetalleEntity;
+import com.spv.spv_backend.infra.GestionVentas.Ventas.Entity.VentasEntity;
 
 @Component
 public class VentaDetalleMapper {
@@ -13,7 +14,7 @@ public class VentaDetalleMapper {
 
         VentaDetalle domain = new VentaDetalle();
         domain.setIdVentaDetalle(entity.getIdVentaDetalle());
-        domain.setIdVenta(entity.getIdVenta());
+        domain.setIdVenta(entity.getVenta() != null ? entity.getVenta().getIdVenta() : null);
         domain.setIdProductoPresentacion(entity.getIdProductoPresentacion());
         domain.setCantidad(entity.getCantidad());
         domain.setPrecioUnitario(entity.getPrecioUnitario());
@@ -27,7 +28,11 @@ public class VentaDetalleMapper {
 
         VentaDetalleEntity entity = new VentaDetalleEntity();
         entity.setIdVentaDetalle(domain.getIdVentaDetalle());
-        entity.setIdVenta(domain.getIdVenta());
+        if (domain.getIdVenta() != null) {
+            VentasEntity venta = new VentasEntity();
+            venta.setIdVenta(domain.getIdVenta());
+            entity.setVenta(venta);
+        }
         entity.setIdProductoPresentacion(domain.getIdProductoPresentacion());
         entity.setCantidad(domain.getCantidad());
         entity.setPrecioUnitario(domain.getPrecioUnitario());

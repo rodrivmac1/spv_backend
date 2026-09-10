@@ -24,7 +24,7 @@ public class VentaDetalleRepositoryAdapter implements VentaDetalleRepositoryPort
 
     @Override
     public List<VentaDetalle> findByVentaId(Long idVenta) {
-        return jpaRepository.findByIdVenta(idVenta).stream()
+        return jpaRepository.findByVenta_IdVenta(idVenta).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }

@@ -1,11 +1,7 @@
 package com.spv.spv_backend.infra.GestionVentas.VentaDetalle.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.spv.spv_backend.infra.GestionVentas.Ventas.Entity.VentasEntity;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -18,8 +14,10 @@ public class VentaDetalleEntity {
     @Column(name = "id_venta_detalle")
     private Long idVentaDetalle;
 
-    @Column(name = "id_venta", nullable = false)
-    private Long idVenta;
+    // Relación ManyToOne con la venta padre para que JPA gestione el id_venta automáticamente
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_venta", nullable = false)
+    private VentasEntity venta;
 
     @Column(name = "id_producto_presentacion", nullable = false)
     private Long idProductoPresentacion;

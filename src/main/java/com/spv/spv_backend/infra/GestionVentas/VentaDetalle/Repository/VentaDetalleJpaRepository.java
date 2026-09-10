@@ -8,5 +8,5 @@ import com.spv.spv_backend.infra.GestionVentas.VentaDetalle.Entity.VentaDetalleE
 
 @Repository
 public interface VentaDetalleJpaRepository extends JpaRepository<VentaDetalleEntity, Long> {
-    List<VentaDetalleEntity> findByIdVenta(Long idVenta);
+    List<VentaDetalleEntity> findByVenta_IdVenta(Long idVenta);
 }
