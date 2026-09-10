@@ -1,43 +1,24 @@
-package com.spv.spv_backend.infra.GestionVentas.VentaDetalle.Adapter;
+package com.spv.spv_backend.web.GestionVentas.VentaDetalle.DTO;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import org.springframework.stereotype.Component;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class VentaDetalleRequestDTO {
 
-import com.spv.spv_backend.domain.GestionVentas.VentaDetalle.Model.VentaDetalle;
-import com.spv.spv_backend.domain.GestionVentas.VentaDetalle.Port.VentaDetalleRepositoryPort;
-import com.spv.spv_backend.infra.GestionVentas.VentaDetalle.Mapper.VentaDetalleMapper;
-import com.spv.spv_backend.infra.GestionVentas.VentaDetalle.Repository.VentaDetalleJpaRepository;
+    @NotNull(message = "El producto presentación es requerido")
+    private Long idProductoPresentacion;
 
-@Component
-public class VentaDetalleRepositoryAdapter implements VentaDetalleRepositoryPort {
+    @NotNull(message = "La cantidad es requerida")
+    private Integer cantidad;
 
-    private final VentaDetalleJpaRepository jpaRepository;
-    private final VentaDetalleMapper mapper;
+    @NotNull(message = "El precio unitario es requerido")
+    private Double precioUnitario;
 
-    public VentaDetalleRepositoryAdapter(VentaDetalleJpaRepository jpaRepository, VentaDetalleMapper mapper) {
-        this.jpaRepository = jpaRepository;
-        this.mapper = mapper;
-    }
-
-    @Override
-    public List<VentaDetalle> findByVentaId(Long idVenta) {
-        return jpaRepository.findByIdVenta(idVenta).stream()
-                .map(mapper::toDomain)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<VentaDetalle> findById(Long id) {
-        return jpaRepository.findById(id).map(mapper::toDomain);
-    }
-
-    @Override
-    public VentaDetalle save(VentaDetalle ventaDetalle) {
-        var entity = mapper.toEntity(ventaDetalle);
-        var savedEntity = jpaRepository.save(entity);
-        return mapper.toDomain(savedEntity);
-    }
+    @NotNull(message = "El subtotal es requerido")
+    private Double subtotal;
 }
