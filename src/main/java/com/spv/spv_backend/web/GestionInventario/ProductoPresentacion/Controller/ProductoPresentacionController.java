@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spv.spv_backend.application.GestionInventario.ProductoPresentacion.ProductoPresentacionService;
+import com.spv.spv_backend.web.GestionInventario.ProductoPresentacion.DTO.ProductoPresentacionGlobalResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.ProductoPresentacion.DTO.ProductoPresentacionRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.ProductoPresentacion.DTO.ProductoPresentacionResponseDTO;
 
@@ -22,21 +23,27 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/gestion-inventario/productos/{idProducto}/presentaciones")
+@RequestMapping("/gestion-inventario/productos")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ProductoPresentacionController {
 
     private final ProductoPresentacionService productoPresentacionService;
 
-    // GET: Listar todas las presentaciones de un producto
-    @GetMapping
+    // NUEVO ENDPOINT GLOBAL: Obtener todas las presentaciones de todos los productos
+    @GetMapping("/presentaciones/todas")
+    public ResponseEntity<List<ProductoPresentacionGlobalResponseDTO>> listarTodasLasPresentacionesGlobales() {
+        return ResponseEntity.ok(productoPresentacionService.obtenerTodasLasPresentacionesGlobales());
+    }
+
+    // GET: Listar todas las presentaciones de un producto específico
+    @GetMapping("/{idProducto}/presentaciones")
     public ResponseEntity<List<ProductoPresentacionResponseDTO>> listarPresentacionesPorProducto(@PathVariable Long idProducto) {
         return ResponseEntity.ok(productoPresentacionService.obtenerPresentacionesPorProducto(idProducto));
     }
 
     // POST: Agregar una nueva presentación a un producto existente
-    @PostMapping
+    @PostMapping("/{idProducto}/presentaciones")
     public ResponseEntity<ProductoPresentacionResponseDTO> agregarPresentacion(
             @PathVariable Long idProducto,
             @Valid @RequestBody ProductoPresentacionRequestDTO request) {
@@ -45,7 +52,7 @@ public class ProductoPresentacionController {
     }
 
     // PUT: Editar una presentación específica del producto
-    @PutMapping("/{idPresentacion}")
+    @PutMapping("/{idProducto}/presentaciones/{idPresentacion}")
     public ResponseEntity<ProductoPresentacionResponseDTO> editarPresentacion(
             @PathVariable Long idProducto,
             @PathVariable Long idPresentacion,
@@ -55,7 +62,7 @@ public class ProductoPresentacionController {
     }
 
     // DELETE: Eliminar una presentación específica del producto
-    @DeleteMapping("/{idPresentacion}")
+    @DeleteMapping("/{idProducto}/presentaciones/{idPresentacion}")
     public ResponseEntity<Void> eliminarPresentacion(
             @PathVariable Long idProducto,
             @PathVariable Long idPresentacion) {

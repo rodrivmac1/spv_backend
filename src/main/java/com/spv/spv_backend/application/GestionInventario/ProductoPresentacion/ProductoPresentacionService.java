@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Model.ProductoPresentacion;
 import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Port.ProductoPresentacionRepositoryPort;
+import com.spv.spv_backend.web.GestionInventario.ProductoPresentacion.DTO.ProductoPresentacionGlobalResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.ProductoPresentacion.DTO.ProductoPresentacionRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.ProductoPresentacion.DTO.ProductoPresentacionResponseDTO;
 
@@ -64,5 +65,8 @@ public class ProductoPresentacionService {
         res.setGramos(dom.getGramos());
         res.setMargenGanancia(dom.getMargenGanancia());
         return res;
+    }
+    public List<ProductoPresentacionGlobalResponseDTO> obtenerTodasLasPresentacionesGlobales() {
+        return repositoryPort.obtenerTodasGlobales();
     }
 }

@@ -10,6 +10,7 @@ import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Model.P
 import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Port.ProductoPresentacionRepositoryPort;
 import com.spv.spv_backend.infra.GestionInventario.ProductoPresentacion.Mapper.ProductoPresentacionMapper;
 import com.spv.spv_backend.infra.GestionInventario.ProductoPresentacion.Repository.ProductoPresentacionJpaRepository;
+import com.spv.spv_backend.web.GestionInventario.ProductoPresentacion.DTO.ProductoPresentacionGlobalResponseDTO;
 
 @Component
 public class ProductoPresentacionRepositoryAdapter implements ProductoPresentacionRepositoryPort {
@@ -38,6 +39,11 @@ public class ProductoPresentacionRepositoryAdapter implements ProductoPresentaci
     public Optional<ProductoPresentacion> findByIdAndIdProducto(Long idPresentacion, Long idProducto) {
         return jpaRepository.findByIdProductoPresentacionAndIdProducto(idPresentacion, idProducto)
                 .map(mapper::toDomain);
+    }
+
+    @Override
+    public List<ProductoPresentacionGlobalResponseDTO> obtenerTodasGlobales() {
+        return jpaRepository.findAllGlobalConDetalle();
     }
 
     @Override
