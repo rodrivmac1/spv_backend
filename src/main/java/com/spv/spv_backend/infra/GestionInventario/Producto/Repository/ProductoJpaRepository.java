@@ -17,7 +17,7 @@ public interface ProductoJpaRepository extends JpaRepository<ProductoEntity, Lon
            "p.idProducto, p.nombre, p.estado, " +
            "COALESCE(mp.nombre, 'Sin Materia Prima'), " +
            "COUNT(DISTINCT i.idProductoInsumo), " +
-           "COUNT(DISTINCT pr.idProductoPresentacion), " +
+           "COUNT(DISTINCT CASE WHEN pr.estado = true THEN pr.idProductoPresentacion END), " +
            "p.fechaCreacion) " + // <-- Añadido aquí
            "FROM ProductoEntity p " +
            "LEFT JOIN MateriasPrimasEntity mp ON mp.idProducto = p.idProducto " +

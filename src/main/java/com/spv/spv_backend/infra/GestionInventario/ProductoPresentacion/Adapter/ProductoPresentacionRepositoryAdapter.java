@@ -25,7 +25,7 @@ public class ProductoPresentacionRepositoryAdapter implements ProductoPresentaci
 
     @Override
     public List<ProductoPresentacion> findByIdProducto(Long idProducto) {
-        return jpaRepository.findByIdProducto(idProducto).stream()
+        return jpaRepository.findByIdProductoAndEstadoTrue(idProducto).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
@@ -37,8 +37,13 @@ public class ProductoPresentacionRepositoryAdapter implements ProductoPresentaci
     // Nueva implementación
     @Override
     public Optional<ProductoPresentacion> findByIdAndIdProducto(Long idPresentacion, Long idProducto) {
-        return jpaRepository.findByIdProductoPresentacionAndIdProducto(idPresentacion, idProducto)
+        return jpaRepository.findByIdProductoPresentacionAndIdProductoAndEstadoTrue(idPresentacion, idProducto)
                 .map(mapper::toDomain);
+    }
+
+    @Override
+    public void desactivarPorProducto(Long idProducto) {
+        jpaRepository.desactivarPorProducto(idProducto);
     }
 
     @Override

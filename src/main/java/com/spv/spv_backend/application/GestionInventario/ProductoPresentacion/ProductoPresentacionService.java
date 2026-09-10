@@ -28,6 +28,7 @@ public class ProductoPresentacionService {
     public ProductoPresentacionResponseDTO agregarPresentacion(Long idProducto, ProductoPresentacionRequestDTO request) {
         ProductoPresentacion presentacion = new ProductoPresentacion();
         presentacion.setIdProducto(idProducto);
+        presentacion.setEstado(true);
         presentacion.setNombre(request.getNombre());
         presentacion.setGramos(request.getGramos());
         presentacion.setMargenGanancia(request.getMargenGanancia());
@@ -54,7 +55,8 @@ public class ProductoPresentacionService {
         ProductoPresentacion existente = repositoryPort.findByIdAndIdProducto(idPresentacion, idProducto)
                 .orElseThrow(() -> new RuntimeException("La presentación con ID " + idPresentacion + " no pertenece al producto con ID " + idProducto));
         
-        repositoryPort.deleteById(existente.getIdProductoPresentacion());
+        existente.setEstado(false);
+        repositoryPort.save(existente);
     }
     
     private ProductoPresentacionResponseDTO mapToResponse(ProductoPresentacion dom) {

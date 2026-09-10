@@ -73,6 +73,7 @@ public class ProductoService {
             for (var presDto : request.getPresentaciones()) {
                 ProductoPresentacion pres = new ProductoPresentacion();
                 pres.setIdProducto(idProducto);
+                pres.setEstado(true);
                 pres.setNombre(presDto.getNombre());
                 pres.setGramos(presDto.getGramos());
                 pres.setMargenGanancia(presDto.getMargenGanancia());
@@ -92,12 +93,14 @@ public class ProductoService {
         return mapToResponse(actualizado);
     }
 
+    @Transactional
     public void eliminacionLogica(Long id) {
         Producto existente = productoRepositoryPort.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
         
         existente.setEstado(false);
         productoRepositoryPort.save(existente);
+        presentacionRepositoryPort.desactivarPorProducto(id);
     }
 
     private ProductoResponseDTO mapToResponse(Producto dom) {

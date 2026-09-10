@@ -12,6 +12,8 @@ public interface ProductoPresentacionRepositoryPort {
 
     List<ProductoPresentacionGlobalResponseDTO> obtenerTodasGlobales();
 
+    void desactivarPorProducto(Long idProducto);
+
     ProductoPresentacion save(ProductoPresentacion productoPresentacion);
     void deleteById(Long id);
 }

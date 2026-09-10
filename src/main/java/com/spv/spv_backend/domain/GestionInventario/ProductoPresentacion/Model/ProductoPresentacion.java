@@ -4,6 +4,7 @@ public class ProductoPresentacion {
 
     private Long idProductoPresentacion;
     private Long idProducto;
+    private Boolean estado;
     private String nombre;
     private Double gramos;
     private Double margenGanancia;
@@ -16,6 +17,9 @@ public class ProductoPresentacion {
 
     public Long getIdProducto() { return idProducto; }
     public void setIdProducto(Long idProducto) { this.idProducto = idProducto; }
+
+    public Boolean getEstado() { return estado; }
+    public void setEstado(Boolean estado) { this.estado = estado; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }

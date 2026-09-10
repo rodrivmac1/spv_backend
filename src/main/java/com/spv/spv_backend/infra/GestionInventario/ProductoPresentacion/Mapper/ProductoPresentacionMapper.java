@@ -14,6 +14,7 @@ public class ProductoPresentacionMapper {
         ProductoPresentacion domain = new ProductoPresentacion();
         domain.setIdProductoPresentacion(entity.getIdProductoPresentacion());
         domain.setIdProducto(entity.getIdProducto());
+        domain.setEstado(entity.getEstado());
         domain.setNombre(entity.getNombre());
         domain.setGramos(entity.getGramos());
         domain.setMargenGanancia(entity.getMargenGanancia());
@@ -27,6 +28,7 @@ public class ProductoPresentacionMapper {
         ProductoPresentacionEntity entity = new ProductoPresentacionEntity();
         entity.setIdProductoPresentacion(domain.getIdProductoPresentacion());
         entity.setIdProducto(domain.getIdProducto());
+        entity.setEstado(domain.getEstado());
         entity.setNombre(domain.getNombre());
         entity.setGramos(domain.getGramos());
         entity.setMargenGanancia(domain.getMargenGanancia());

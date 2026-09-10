@@ -21,6 +21,9 @@ public class ProductoPresentacionEntity {
     @Column(name = "id_producto", nullable = false)
     private Long idProducto;
 
+    @Column(name = "estado", nullable = false)
+    private Boolean estado;
+
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
