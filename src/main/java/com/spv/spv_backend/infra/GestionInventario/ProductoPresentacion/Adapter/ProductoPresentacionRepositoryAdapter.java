@@ -42,11 +42,6 @@ public class ProductoPresentacionRepositoryAdapter implements ProductoPresentaci
     }
 
     @Override
-    public void desactivarPorProducto(Long idProducto) {
-        jpaRepository.desactivarPorProducto(idProducto);
-    }
-
-    @Override
     public List<ProductoPresentacionGlobalResponseDTO> obtenerTodasGlobales() {
         return jpaRepository.findAllGlobalConDetalle();
     }

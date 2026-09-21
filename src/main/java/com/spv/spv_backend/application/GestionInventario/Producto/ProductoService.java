@@ -100,7 +100,6 @@ public class ProductoService {
         
         existente.setEstado(false);
         productoRepositoryPort.save(existente);
-        presentacionRepositoryPort.desactivarPorProducto(id);
     }
 
     private ProductoResponseDTO mapToResponse(Producto dom) {
