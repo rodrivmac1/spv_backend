@@ -7,5 +7,6 @@ public class ClientesResponseDTO {
     private Long idCliente;
     private String nombre;
     private Long idTipoCliente;
+    private String nombreTipoCliente;
     private Boolean estado;
 }

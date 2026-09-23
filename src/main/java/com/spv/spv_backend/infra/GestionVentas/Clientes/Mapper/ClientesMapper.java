@@ -15,6 +15,9 @@ public class ClientesMapper {
         domain.setIdCliente(entity.getIdCliente());
         domain.setNombre(entity.getNombre());
         domain.setIdTipoCliente(entity.getIdTipoCliente());
+        if (entity.getTipoCliente() != null) {
+            domain.setNombreTipoCliente(entity.getTipoCliente().getNombre());
+        }
         domain.setEstado(entity.getEstado());
 
         return domain;

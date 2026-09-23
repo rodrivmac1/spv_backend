@@ -67,6 +67,7 @@ public class ClientesService {
         res.setIdCliente(dom.getIdCliente());
         res.setNombre(dom.getNombre());
         res.setIdTipoCliente(dom.getIdTipoCliente());
+        res.setNombreTipoCliente(dom.getNombreTipoCliente());
         res.setEstado(dom.getEstado());
         return res;
     }
