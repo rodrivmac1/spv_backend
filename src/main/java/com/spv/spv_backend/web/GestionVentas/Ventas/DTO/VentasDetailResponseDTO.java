@@ -9,6 +9,7 @@ import lombok.Data;
 public class VentasDetailResponseDTO {
     private Long idVenta;
     private Long idCliente;
+    private String nombreCliente;
     private LocalDateTime fecha;
     private Double total;
     private List<DetalleItemDTO> detalles;

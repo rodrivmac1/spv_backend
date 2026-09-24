@@ -50,12 +50,16 @@ public class VentasService {
 
     // GET por ID: Obtiene la venta y sus detalles con JdbcTemplate
     public VentasDetailResponseDTO obtenerVentaPorId(Long idVenta) {
-        String sqlVenta = "SELECT id_venta, id_cliente, fecha, total FROM ventas WHERE id_venta = ?";
+        String sqlVenta = "SELECT v.id_venta, v.id_cliente, c.nombre AS nombre_cliente, v.fecha, v.total " +
+                          "FROM ventas v " +
+                          "JOIN clientes c ON v.id_cliente = c.id_cliente " +
+                          "WHERE v.id_venta = ?";
         
         VentasDetailResponseDTO ventaDto = jdbcTemplate.queryForObject(sqlVenta, (rs, rowNum) -> {
             VentasDetailResponseDTO v = new VentasDetailResponseDTO();
             v.setIdVenta(rs.getLong("id_venta"));
             v.setIdCliente(rs.getLong("id_cliente"));
+            v.setNombreCliente(rs.getString("nombre_cliente"));
             v.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
             v.setTotal(rs.getDouble("total"));
             return v;
