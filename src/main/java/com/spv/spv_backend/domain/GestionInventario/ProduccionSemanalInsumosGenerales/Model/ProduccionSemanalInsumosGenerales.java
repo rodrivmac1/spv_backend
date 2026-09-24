@@ -1,11 +1,15 @@
 package com.spv.spv_backend.domain.GestionInventario.ProduccionSemanalInsumosGenerales.Model;
 
+import java.time.LocalDate;
+
 public class ProduccionSemanalInsumosGenerales {
 
     private Long idProduccionSemanalInsumoGeneral;
     private Long idProduccionSemanal;
     private Long idInsumoGeneral;
     private String nombreInsumo;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private Double costo;
 
     public ProduccionSemanalInsumosGenerales() {
@@ -22,6 +26,12 @@ public class ProduccionSemanalInsumosGenerales {
 
     public String getNombreInsumo() { return nombreInsumo; }
     public void setNombreInsumo(String nombreInsumo) { this.nombreInsumo = nombreInsumo; }
+
+    public LocalDate getFechaInicio() { return fechaInicio; }
+    public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = fechaInicio; }
+
+    public LocalDate getFechaFin() { return fechaFin; }
+    public void setFechaFin(LocalDate fechaFin) { this.fechaFin = fechaFin; }
 
     public Double getCosto() { return costo; }
     public void setCosto(Double costo) { this.costo = costo; }

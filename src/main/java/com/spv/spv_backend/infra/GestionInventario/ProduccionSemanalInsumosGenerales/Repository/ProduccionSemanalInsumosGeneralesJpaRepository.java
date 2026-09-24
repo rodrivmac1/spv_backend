@@ -11,6 +11,9 @@ import com.spv.spv_backend.infra.GestionInventario.ProduccionSemanalInsumosGener
 @Repository
 public interface ProduccionSemanalInsumosGeneralesJpaRepository extends JpaRepository<ProduccionSemanalInsumosGeneralesEntity, Long> {
     
-    @Query("SELECT p FROM ProduccionSemanalInsumosGeneralesEntity p LEFT JOIN FETCH p.insumoGeneral WHERE p.idProduccionSemanal = :idProduccionSemanal")
+    @Query("SELECT p FROM ProduccionSemanalInsumosGeneralesEntity p LEFT JOIN FETCH p.insumoGeneral LEFT JOIN FETCH p.produccionSemanal")
+    List<ProduccionSemanalInsumosGeneralesEntity> findAllWithInsumoGeneral();
+
+    @Query("SELECT p FROM ProduccionSemanalInsumosGeneralesEntity p LEFT JOIN FETCH p.insumoGeneral LEFT JOIN FETCH p.produccionSemanal WHERE p.idProduccionSemanal = :idProduccionSemanal")
     List<ProduccionSemanalInsumosGeneralesEntity> findByIdProduccionSemanal(@Param("idProduccionSemanal") Long idProduccionSemanal);
 }

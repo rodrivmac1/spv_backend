@@ -19,6 +19,10 @@ public class ProduccionSemanalInsumosGeneralesMapper {
         if (entity.getInsumoGeneral() != null) {
             domain.setNombreInsumo(entity.getInsumoGeneral().getNombre());
         }
+        if (entity.getProduccionSemanal() != null) {
+            domain.setFechaInicio(entity.getProduccionSemanal().getFechaInicio());
+            domain.setFechaFin(entity.getProduccionSemanal().getFechaFin());
+        }
 
         return domain;
     }

@@ -21,6 +21,13 @@ public class ProduccionSemanalInsumosGeneralesRepositoryAdapter implements Produ
     private final ProduccionSemanalInsumosGeneralesMapper mapper;
 
     @Override
+    public List<ProduccionSemanalInsumosGenerales> findAll() {
+        return jpaRepository.findAllWithInsumoGeneral().stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ProduccionSemanalInsumosGenerales> findByIdProduccionSemanal(Long idProduccionSemanal) {
         return jpaRepository.findByIdProduccionSemanal(idProduccionSemanal).stream()
                 .map(mapper::toDomain)
