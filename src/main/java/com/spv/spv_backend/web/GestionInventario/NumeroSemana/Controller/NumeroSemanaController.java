@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spv.spv_backend.application.GestionInventario.NumeroSemana.NumeroSemanaService;
+import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.CostoTotalSemanaResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaResponseDTO;
 
@@ -32,6 +33,11 @@ public class NumeroSemanaController {
     @GetMapping
     public ResponseEntity<List<NumeroSemanaResponseDTO>> listarSemanas() {
         return ResponseEntity.ok(numeroSemanaService.listarSemanas());
+    }
+
+    @GetMapping("/costo-total-produccion")
+    public ResponseEntity<List<CostoTotalSemanaResponseDTO>> listarCostosTotalesPorSemana() {
+        return ResponseEntity.ok(numeroSemanaService.listarCostosTotalesPorSemana());
     }
 
     @GetMapping("/{id}")

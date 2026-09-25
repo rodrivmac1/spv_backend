@@ -1,5 +1,6 @@
 package com.spv.spv_backend.application.GestionInventario.NumeroSemana;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ import com.spv.spv_backend.domain.GestionInventario.ProductoPresentacion.Port.Pr
 import com.spv.spv_backend.domain.GestionInventario.ProduccionProductoPresentacion.Model.ProduccionProductoPresentacion;
 import com.spv.spv_backend.domain.GestionInventario.ProduccionProductoPresentacion.Port.ProduccionProductoPresentacionRepositoryPort;
 
+import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.CostoTotalSemanaResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaRequestDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.NumeroSemanaResponseDTO;
 import com.spv.spv_backend.web.GestionInventario.NumeroSemana.DTO.ProduccionSemanalInsumosGeneralesResponseDTO;
@@ -51,6 +53,23 @@ public class NumeroSemanaService {
     public List<NumeroSemanaResponseDTO> listarSemanas() {
         return repositoryPort.findAll().stream()
                 .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<CostoTotalSemanaResponseDTO> listarCostosTotalesPorSemana() {
+        return repositoryPort.findAll().stream()
+                .map(semana -> {
+                    double costoTotal = produccionSemanalProductoRepositoryPort
+                            .findByIdProduccionSemanal(semana.getIdProduccionSemanal()).stream()
+                            .mapToDouble(lote -> lote.getCostoTotalLote() != null ? lote.getCostoTotalLote() : 0.0)
+                            .sum();
+
+                    CostoTotalSemanaResponseDTO response = new CostoTotalSemanaResponseDTO();
+                    response.setNumeroSemana(semana.getNumeroSemana());
+                    response.setCostoTotalSemana(costoTotal);
+                    return response;
+                })
+                .sorted(Comparator.comparing(CostoTotalSemanaResponseDTO::getNumeroSemana))
                 .collect(Collectors.toList());
     }
 
