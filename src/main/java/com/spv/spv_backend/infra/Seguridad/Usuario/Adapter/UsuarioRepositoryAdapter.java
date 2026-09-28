@@ -43,8 +43,8 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     }
 
     @Override
-    public Optional<Usuario> findByCorreo(String correo) {
-        return jpaRepository.findByCorreo(correo).map(mapper::toDomain);
+    public Optional<Usuario> findByNombreUsuario(String nombreUsuario) {
+        return jpaRepository.findByNombreUsuario(nombreUsuario).map(mapper::toDomain);
     }
 
     @Override

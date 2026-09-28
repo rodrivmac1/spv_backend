@@ -50,7 +50,7 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setRol(rol);
         usuario.setNombre(request.getNombre());
-        usuario.setCorreo(request.getCorreo());
+        usuario.setNombreUsuario(request.getNombreUsuario());
         // Encriptar contraseña antes de guardarla
         usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setEstado(true); // Nace activo por defecto
@@ -71,7 +71,7 @@ public class UsuarioService {
         }
 
         existente.setNombre(request.getNombre());
-        existente.setCorreo(request.getCorreo());
+        existente.setNombreUsuario(request.getNombreUsuario());
         
         // Si mandan una nueva contraseña, la encriptamos y actualizamos; si va vacía, la conservamos
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
@@ -103,7 +103,7 @@ public class UsuarioService {
         res.setIdRol(dom.getRol() != null ? dom.getRol().getIdRol() : null);
         res.setNombreRol(dom.getRol() != null ? dom.getRol().getNombre() : null);
         res.setNombre(dom.getNombre());
-        res.setCorreo(dom.getCorreo());
+        res.setNombreUsuario(dom.getNombreUsuario());
         res.setUltimoAcceso(dom.getUltimoAcceso());
         res.setEstado(dom.getEstado());
         res.setFechaCreacion(dom.getFechaCreacion());

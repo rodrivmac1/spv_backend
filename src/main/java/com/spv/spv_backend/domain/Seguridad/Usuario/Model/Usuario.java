@@ -8,7 +8,7 @@ public class Usuario {
     private Long idUsuario;
     private Rol rol; // Relación con el dominio Rol
     private String nombre;
-    private String correo;
+    private String nombreUsuario;
     private String passwordHash;
     private LocalDateTime ultimoAcceso;
     private Boolean estado;
@@ -26,8 +26,8 @@ public class Usuario {
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    public String getNombreUsuario() { return nombreUsuario; }
+    public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
 
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }

@@ -9,6 +9,6 @@ public interface UsuarioRepositoryPort {
     List<Usuario> listActive();
     List<Usuario> findAll();
     Optional<Usuario> findById(Long id);
-    Optional<Usuario> findByCorreo(String correo);
+    Optional<Usuario> findByNombreUsuario(String nombreUsuario);
     Usuario save(Usuario usuario);
 }

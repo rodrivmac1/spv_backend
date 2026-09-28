@@ -1,6 +1,5 @@
 package com.spv.spv_backend.web.Seguridad.Usuario.DTO;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,9 +17,8 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "El nombre del usuario es requerido")
     private String nombre;
 
-    @Email(message = "El formato del correo no es válido")
-    @NotBlank(message = "El correo es requerido")
-    private String correo;
+    @NotBlank(message = "El nombre de usuario es requerido")
+    private String nombreUsuario;
 
     @NotBlank(message = "La contraseña es requerida")
     private String password;

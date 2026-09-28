@@ -9,7 +9,7 @@ public class UsuarioResponseDTO {
     private Long idRol;
     private String nombreRol; // Útil para mostrar el nombre del rol directamente en la tabla del frontend
     private String nombre;
-    private String correo;
+    private String nombreUsuario;
     private LocalDateTime ultimoAcceso;
     private Boolean estado;
     private LocalDateTime fechaCreacion;

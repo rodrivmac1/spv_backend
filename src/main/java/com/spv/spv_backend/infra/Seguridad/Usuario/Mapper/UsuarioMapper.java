@@ -22,7 +22,7 @@ public class UsuarioMapper {
         domain.setIdUsuario(entity.getIdUsuario());
         domain.setRol(rolMapper.toDomain(entity.getRol()));
         domain.setNombre(entity.getNombre());
-        domain.setCorreo(entity.getCorreo());
+        domain.setNombreUsuario(entity.getNombreUsuario());
         domain.setPasswordHash(entity.getPasswordHash());
         domain.setUltimoAcceso(entity.getUltimoAcceso());
         domain.setEstado(entity.getEstado());
@@ -38,7 +38,7 @@ public class UsuarioMapper {
         entity.setIdUsuario(domain.getIdUsuario());
         entity.setRol(rolMapper.toEntity(domain.getRol()));
         entity.setNombre(domain.getNombre());
-        entity.setCorreo(domain.getCorreo());
+        entity.setNombreUsuario(domain.getNombreUsuario());
         entity.setPasswordHash(domain.getPasswordHash());
         entity.setUltimoAcceso(domain.getUltimoAcceso());
         entity.setEstado(domain.getEstado());

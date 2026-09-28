@@ -10,5 +10,5 @@ import com.spv.spv_backend.infra.Seguridad.Usuario.Entity.UsuarioEntity;
 @Repository
 public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Long> {
     List<UsuarioEntity> findByEstadoTrue();
-    Optional<UsuarioEntity> findByCorreo(String correo);
+    Optional<UsuarioEntity> findByNombreUsuario(String nombreUsuario);
 }
