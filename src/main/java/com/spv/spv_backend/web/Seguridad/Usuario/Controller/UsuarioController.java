@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spv.spv_backend.application.Seguridad.Usuario.UsuarioService;
 import com.spv.spv_backend.web.Seguridad.Usuario.DTO.UsuarioRequestDTO;
 import com.spv.spv_backend.web.Seguridad.Usuario.DTO.UsuarioResponseDTO;
+import com.spv.spv_backend.web.Seguridad.Usuario.DTO.UsuarioUpdateRequestDTO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> editarUsuario(
             @PathVariable Long id,
-            @Valid @RequestBody UsuarioRequestDTO request) {
+            @Valid @RequestBody UsuarioUpdateRequestDTO request) {
         UsuarioResponseDTO actualizado = usuarioService.editarUsuario(id, request);
         return ResponseEntity.ok(actualizado);
     }

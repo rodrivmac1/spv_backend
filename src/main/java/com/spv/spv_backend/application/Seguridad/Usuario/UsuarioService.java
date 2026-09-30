@@ -13,6 +13,7 @@ import com.spv.spv_backend.domain.Seguridad.Usuario.Model.Usuario;
 import com.spv.spv_backend.domain.Seguridad.Usuario.Port.UsuarioRepositoryPort;
 import com.spv.spv_backend.web.Seguridad.Usuario.DTO.UsuarioRequestDTO;
 import com.spv.spv_backend.web.Seguridad.Usuario.DTO.UsuarioResponseDTO;
+import com.spv.spv_backend.web.Seguridad.Usuario.DTO.UsuarioUpdateRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,7 +61,7 @@ public class UsuarioService {
         return mapToResponse(saved);
     }
 
-    public UsuarioResponseDTO editarUsuario(Long id, UsuarioRequestDTO request) {
+    public UsuarioResponseDTO editarUsuario(Long id, UsuarioUpdateRequestDTO request) {
         Usuario existente = usuarioRepositoryPort.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
 
