@@ -51,6 +51,10 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     public Usuario save(Usuario usuario) {
         UsuarioEntity entity = mapper.toEntity(usuario);
         UsuarioEntity savedEntity = jpaRepository.save(entity);
-        return mapper.toDomain(savedEntity);
+        return jpaRepository.findById(savedEntity.getIdUsuario())
+                .map(mapper::toDomain)
+                .orElseThrow(() -> new IllegalStateException(
+                        "No se pudo recuperar el usuario guardado con ID: "
+                                + savedEntity.getIdUsuario()));
     }
 }
