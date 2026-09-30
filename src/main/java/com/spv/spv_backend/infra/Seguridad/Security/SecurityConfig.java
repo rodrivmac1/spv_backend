@@ -94,19 +94,18 @@ public class SecurityConfig {
                     )
                     .permitAll()
 
-                    // APIs necesarias para registrar una venta
+                    // Lecturas generales y registro de ventas para usuarios.
                     .requestMatchers(
                             HttpMethod.POST,
                             "/gestion-ventas/ventas"
                     )
                     .hasAnyRole("Administrador", "Usuario")
                     .requestMatchers(
-                            HttpMethod.GET,
-                            "/gestion-ventas/clientes",
-                            "/gestion-inventario/productos",
-                            "/gestion-inventario/productos/presentaciones/todas",
-                            "/gestion-inventario/productos/*/presentaciones"
+                            HttpMethod.DELETE,
+                            "/gestion-ventas/ventas/**"
                     )
+                    .hasAnyRole("Administrador", "Usuario")
+                    .requestMatchers(HttpMethod.GET, "/**")
                     .hasAnyRole("Administrador", "Usuario")
 
                     // El resto de la aplicación es exclusivo de administradores
