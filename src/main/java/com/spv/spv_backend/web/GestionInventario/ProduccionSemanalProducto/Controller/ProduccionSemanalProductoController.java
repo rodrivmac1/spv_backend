@@ -3,7 +3,6 @@ package com.spv.spv_backend.web.GestionInventario.ProduccionSemanalProducto.Cont
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/gestion-inventario/produccion-semanal/{idProduccionSemanal}/productos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class ProduccionSemanalProductoController {
 
     private final ProduccionSemanalProductoService produccionSemanalProductoService;

@@ -1,7 +1,6 @@
 package com.spv.spv_backend.web.GestionInventario.MateriasPrimas.Controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/gestion-inventario/productos/{idProducto}/materia-prima")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class MateriasPrimasController {
 
     private final MateriasPrimasService materiasPrimasService;
