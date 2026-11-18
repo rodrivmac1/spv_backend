@@ -7,7 +7,7 @@ import com.spv.spv_backend.web.GestionInventario.Producto.DTO.ProductoConDetalle
 
 public interface ProductoRepositoryPort {
     List<Producto> listActive();
-    List<ProductoConDetallesResponseDTO> listActiveWithDetails();
+    List<ProductoConDetallesResponseDTO> listAllWithDetails();
     Optional<Producto> findById(Long id);
     Producto save(Producto producto);
 }

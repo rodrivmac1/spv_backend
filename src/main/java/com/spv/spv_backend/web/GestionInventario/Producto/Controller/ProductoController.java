@@ -31,8 +31,8 @@ public class ProductoController {
 
     // GET general actualizado que retorna la lista con los conteos y la materia prima
     @GetMapping
-    public ResponseEntity<List<ProductoConDetallesResponseDTO>> listarProductosActivos() {
-        return ResponseEntity.ok(productoService.obtenerProductosActivos());
+    public ResponseEntity<List<ProductoConDetallesResponseDTO>> listarProductos() {
+        return ResponseEntity.ok(productoService.obtenerProductos());
     }
 
     @GetMapping("/{id}")

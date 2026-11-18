@@ -31,8 +31,8 @@ public class ProductoService {
     private final ProductoPresentacionRepositoryPort presentacionRepositoryPort;
 
     // Método modificado para devolver la lista con los nuevos campos agregados
-    public List<ProductoConDetallesResponseDTO> obtenerProductosActivos() {
-        return productoRepositoryPort.listActiveWithDetails();
+    public List<ProductoConDetallesResponseDTO> obtenerProductos() {
+        return productoRepositoryPort.listAllWithDetails();
     }
 
     public ProductoResponseDTO obtenerProductoPorId(Long id) {

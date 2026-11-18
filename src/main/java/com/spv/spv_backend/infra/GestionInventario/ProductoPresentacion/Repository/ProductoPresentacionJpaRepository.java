@@ -19,6 +19,6 @@ public interface ProductoPresentacionJpaRepository extends JpaRepository<Product
            "p.idProducto, p.idProductoPresentacion, CONCAT(p.nombre, ' - ', p.gramos, 'g - ', prod.nombre)) " +
            "FROM ProductoPresentacionEntity p " +
            "JOIN ProductoEntity prod ON p.idProducto = prod.idProducto " +
-           "WHERE p.estado = true AND prod.estado = true")
+           "WHERE p.estado = true")
     List<ProductoPresentacionGlobalResponseDTO> findAllGlobalConDetalle();
 }

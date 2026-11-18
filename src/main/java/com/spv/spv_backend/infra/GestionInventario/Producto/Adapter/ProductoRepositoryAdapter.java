@@ -31,8 +31,8 @@ public class ProductoRepositoryAdapter implements ProductoRepositoryPort {
     }
 
     @Override
-    public List<ProductoConDetallesResponseDTO> listActiveWithDetails() {
-        return jpaRepository.listarProductosConDetallesActivos();
+    public List<ProductoConDetallesResponseDTO> listAllWithDetails() {
+        return jpaRepository.listarTodosConDetalles();
     }
 
     @Override
